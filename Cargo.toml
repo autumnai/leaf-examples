@@ -7,8 +7,9 @@ authors = ["Michael Hirn <mj@autumnai.com>",
 
 [dependencies]
 # cuticula = "0.1.4"
-leaf = { version = "0.2.0", default-features = false }
-collenchyma = { version = "0.0.8", default-features = false }
+# leaf = { version = "0.2.0", default-features = false }
+leaf = { version = "0.2.0", default-features = false, git = "https://github.com/autumnai/leaf.git" }
+collenchyma = { version = "0.0.8", default-features = false, features = ["native"] }
 
 csv = "0.14"
 hyper = "0.6"
@@ -23,8 +24,8 @@ rustc-serialize = "0.3"
 clippy = { version = "0.0.23", optional = true }
 
 [features]
-default = ["native", "opencl", "cuda"]
-native = ["leaf/native", "collenchyma/native"]
+default = ["native"]
+native = ["leaf/native"]
 opencl = ["leaf/opencl", "collenchyma/opencl"]
 cuda = ["leaf/cuda", "collenchyma/cuda"]
 

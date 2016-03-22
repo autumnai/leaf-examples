@@ -11,6 +11,7 @@ extern crate collenchyma as co;
 use std::io::prelude::*;
 use std::fs::File;
 use std::sync::{Arc, RwLock};
+use std::rc::Rc;
 
 use hyper::Client;
 
@@ -121,6 +122,7 @@ fn run_mnist(model_name: Option<String>, batch_size: Option<usize>, learning_rat
     net_cfg.force_backward = true;
 
     match &*model_name.unwrap_or("none".to_owned()) {
+        #[cfg(all(feature="cuda", not(feature="native")))]
         "conv" => {
             let reshape_cfg = LayerConfig::new("reshape", ReshapeConfig::of_shape(&vec![batch_size, 1, 28, 28]));
             net_cfg.add_layer(reshape_cfg);
@@ -155,7 +157,7 @@ fn run_mnist(model_name: Option<String>, batch_size: Option<usize>, learning_rat
     classifier_cfg.add_layer(nll_cfg);
 
     // set up backends
-    let backend = ::std::rc::Rc::new(Backend::<Cuda>::default().unwrap());
+    let backend = Rc::new(Backend::<Native>::default().unwrap()); // change this line to choose backend
     let native_backend = ::std::rc::Rc::new(Backend::<Native>::default().unwrap());
 
     // set up solver
@@ -170,7 +172,7 @@ fn run_mnist(model_name: Option<String>, batch_size: Option<usize>, learning_rat
 
     let mut inp = SharedTensor::<f32>::new(backend.device(), &vec![batch_size, 1, 28, 28]).unwrap();
     let label = SharedTensor::<f32>::new(native_backend.device(), &vec![batch_size, 1]).unwrap();
-    inp.add_device(native_backend.device()).unwrap();
+    let _ = inp.add_device(native_backend.device());
 
     let inp_lock = Arc::new(RwLock::new(inp));
     let label_lock = Arc::new(RwLock::new(label));
