@@ -6,6 +6,7 @@ authors = ["Michael Hirn <mj@autumnai.com>",
            "Maximilian Goisser <max@autumnai.com>"]
 
 [dependencies]
+pkg-config = "0.3.8"
 # cuticula = "0.1.4"
 leaf = { version = "0.2.0", default-features = false }
 collenchyma = { version = "0.0.8", default-features = false }
