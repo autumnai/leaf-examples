@@ -7,11 +7,11 @@ authors = ["Michael Hirn <mj@autumnai.com>",
 
 [dependencies]
 # cuticula = "0.1.4"
-leaf = { version = "0.2.0", default-features = false }
-collenchyma = { version = "0.0.8", default-features = false }
+leaf = { git = "https://github.com/alexandermorozov/leaf", default-features = false }
+collenchyma = { git = "https://github.com/alexandermorozov/collenchyma", default-features = false }
 
 csv = "0.14"
-hyper = "0.6"
+hyper = { version = "0.7", default-features = false }
 
 log = "0.3"
 env_logger = "0.3"
